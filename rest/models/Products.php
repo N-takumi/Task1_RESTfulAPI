@@ -37,7 +37,23 @@ class Products extends Model
         );
       */
 
-        // price cannot be less than zero
+
+        //タイトルの文字数制限
+        if(strlen($this->name) > 100){
+          $this->appendMessage(
+              new Message('商品タイトルは最大100文字までです。')
+          );
+        }
+
+        //説明文の文字数制限
+        if(strlen($this->description) > 500){
+          $this->appendMessage(
+              new Message('説明文は最大100文字までです。')
+          );
+        }
+
+
+        //priceに0以下の数字を設定できないようにする
         if ($this->price < 0) {
             $this->appendMessage(
                 new Message('The price cannot be less than zero')
@@ -48,5 +64,6 @@ class Products extends Model
         if ($this->validationHasFailed() === true) {
             return false;
         }
+
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
-header("Content-Type: text/html; charset=UTF-8");
-
 use Phalcon\Loader;//ローダの使用
+use Phalcon\Http\Response;
 use Phalcon\Mvc\Micro;//マイクロアプリケーションの使用(apiに向いている)
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as PdoMysql;
@@ -30,7 +29,7 @@ $di->set(
             [
                 'host'     => 'localhost',
                 'username' => 'root',
-                'password' => 'pass',
+                'password' => '',
                 'dbname'   => 'shop',//shopに変更
             ]
         );
@@ -46,22 +45,22 @@ $app = new Micro($di);
 //各ルートはhttpメソッドと同じ名前で定義される
 //最初のパラメータとしてルートパターンを渡し、その後にハンドラが続く
 
-// Retrieves all products
 //データの取得 全件取得
 $app->get(
     '/api/products',
     function () use ($app) {
         //PHQLを使って実行
-        $phql = 'SELECT * FROM Store\Toys\Products ORDER BY name';
+        $phql = 'SELECT * FROM Store\Toys\Products ORDER BY id';//id順に取得
 
-        $products = $app->modelsManager->executeQuery($phql);
+        $products = $app->modelsManager->executeQuery($phql);//実行結果を格納
 
-        $data = [];
+        $data = [];//レスポンスデータの格納 配列
 
         foreach ($products as $product) {
             $data[] = [
                 'id'   => $product->id,
                 'name' => $product->name,
+                'price'=> $product->price,
             ];
         }
 
@@ -70,36 +69,6 @@ $app->get(
 );
 
 
-// Searches for products with $name in their name
-//検索
-$app->get(
-    '/api/products/search/{name}',
-    function ($name) use ($app) {
-        $phql = 'SELECT * FROM Store\Toys\Products WHERE name LIKE :name: ORDER BY name';
-
-        $products = $app->modelsManager->executeQuery(
-            $phql,
-            [
-                'name' => '%' . $name . '%'
-            ]
-        );
-
-        $data = [];
-
-        foreach ($products as $product) {
-            $data[] = [
-                'id'   => $product->id,
-                'name' => $product->name,
-            ];
-        }
-
-        echo json_encode($data);
-    }
-);
-
-
-use Phalcon\Http\Response;
-// Retrieves products based on primary key
 //個別取得
 $app->get(
     '/api/products/{id:[0-9]+}',
@@ -111,7 +80,7 @@ $app->get(
             [
                 'id' => $id,
             ]
-        )->getFirst();
+        )->getFirst();//結果の最初のレコードを取得
 
         // Create a response
         $response = new Response();
@@ -133,10 +102,41 @@ $app->get(
                 ]
             );
         }
-
         return $response;
     }
 );
+
+
+//検索 //部分一致
+$app->get(
+    '/api/products/search/{name}',
+    function ($name) use ($app) {
+        $phql = 'SELECT * FROM Store\Toys\Products WHERE name LIKE :name: ORDER BY name';//後でマッピングする
+
+        $products = $app->modelsManager->executeQuery(
+            $phql,
+            [
+                'name' => '%' . $name . '%'
+            ]
+        );
+
+        $data = [];//レスポンスデータの格納 配列
+
+        foreach ($products as $product) {
+            $data[] = [
+                'id'   => $product->id,
+                'name' => $product->name,
+                'description'=> $product->description,
+                'price'=> $product->price,
+            ];
+        }
+
+        //検索結果が見つからない時のレスポンスを準備する必要がある
+
+        echo json_encode($data);
+    }
+);
+
 
 
 // Adds a new product
@@ -144,7 +144,7 @@ $app->get(
 $app->post(
     '/api/products',
     function () use ($app) {
-            $product = $app->request->getJsonRawBody();
+            $product = $app->request->getJsonRawBody();//デコードされたJSON HTTP生のリクエストボディを取得する
 
             $phql = 'INSERT INTO Store\Toys\Products (name, description, price) VALUES (:name:, :description:, :price:)';
 
@@ -157,7 +157,7 @@ $app->post(
                 ]
             );
 
-            // Create a response
+            //レスポンスの作成
             $response = new Response();
 
             // Check if the insertion was successful
@@ -165,7 +165,7 @@ $app->post(
                 // Change the HTTP status
                 $response->setStatusCode(201, 'Created');
 
-                $product->id = $status->getModel()->id;
+                $product->id = $status->getModel()->id;//IDの割り当て
 
                 $response->setJsonContent(
                     [
@@ -198,13 +198,13 @@ $app->post(
 
 
 // Updates products based on primary key
-//データの更新
+//データの変更(更新)
 $app->put(
     '/api/products/{id:[0-9]+}',
     function ($id) use ($app) {
-        $product = $app->request->getJsonRawBody();
+        $product = $app->request->getJsonRawBody();//デコードされたJSON HTTP生のリクエストボディを取得する
 
-        $phql = 'UPDATE Store\Toys\Products SET name = :name:, description = :description:, price = :price: WHERE id = :id:';
+        $phql = 'UPDATE Store\Toys\Products SET name = :name:, description = :description:, price = :price: WHERE id = :id:';//IDで指定した商品の変更
 
         $status = $app->modelsManager->executeQuery(
             $phql,
@@ -216,7 +216,7 @@ $app->put(
             ]
         );
 
-        // Create a response
+        //レスポンスの作成
         $response = new Response();
 
         // Check if the insertion was successful
@@ -256,7 +256,7 @@ $app->put(
 $app->delete(
     '/api/products/{id:[0-9]+}',
     function ($id) use ($app) {
-        $phql = 'DELETE FROM Store\Toys\products WHERE id = :id:';
+        $phql = 'DELETE FROM Store\Toys\Products WHERE id=:id:';//ID指定して削除する
 
         $status = $app->modelsManager->executeQuery(
             $phql,
