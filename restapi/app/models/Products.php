@@ -7,6 +7,8 @@ use Phalcon\Mvc\Model\Message;
 //use Phalcon\Mvc\Model\Validator\Uniqueness;
 //use Phalcon\Mvc\Model\Validator\InclusionIn;
 
+//モデルではvalidationやデータの検索やセーブ、（必要があれば）データの加工、PHQLを使うならクエリの組み立てなどをします。
+
 class Products extends Model
 {
     public function validation()//データの妥当性を高めるための機能
