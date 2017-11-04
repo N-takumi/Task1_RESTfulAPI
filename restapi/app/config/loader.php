@@ -8,11 +8,8 @@ $loader = new \Phalcon\Loader();
 
 //名前空間の定義
 
- $loader->registerNamespaces(
-     [
-         'Store\Toys' => __DIR__ . '/models/',
-     ]
- );
+
+
 
 
 $loader->registerDirs(
@@ -20,4 +17,6 @@ $loader->registerDirs(
         $config->application->controllersDir,
         $config->application->modelsDir
     ]
-)->register();
+);
+
+$loader->register();

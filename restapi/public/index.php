@@ -1,5 +1,7 @@
 <?php
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Db\Adapter\Pdo\Mysql as PdoMysql;
+use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 
 error_reporting(E_ALL);
 
@@ -21,7 +23,7 @@ try {
             [
                 'host'     => 'localhost',
                 'username' => 'root',
-                'password' => 'Takumi17',
+                'password' => 'pass',
                 'dbname'   => 'shop',//shopに変更
             ]
         );

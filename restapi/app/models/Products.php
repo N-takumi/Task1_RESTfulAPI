@@ -1,16 +1,29 @@
 <?php
 
-namespace Store\Toys;
+//namespace Store\Models;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Message;
 //use Phalcon\Mvc\Model\Validator\Uniqueness;
 //use Phalcon\Mvc\Model\Validator\InclusionIn;
 
-//モデルではvalidationやデータの検索やセーブ、（必要があれば）データの加工、PHQLを使うならクエリの組み立てなどをします。
-
 class Products extends Model
 {
+
+    public $id;
+    public $name;
+    public $description;
+    public $price;
+
+    public function getId()
+    {
+      return $this->id;
+    }
+    public function getName()
+    {
+    return $this->name;
+    }
+
     public function validation()//データの妥当性を高めるための機能
     {
 
