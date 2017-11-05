@@ -1,6 +1,7 @@
 <?php
 //use Store\Models\Products;
 use Phalcon\Http\Response;
+use Phalcon\Http\Request;
 class IndexController extends ControllerBase
 {
 
@@ -89,7 +90,22 @@ class IndexController extends ControllerBase
     //データの挿入
     public function addAction()
     {
-      echo'データの挿入';
+      echo'データの挿入</br>';
+
+
+      if ($this->request->isPost()) {
+        $result = $this->request->getJsonRawBody();
+        echo(var_dump($result));
+        echo($result->name);
+
+        $product = new Products();
+        $product->name = $result->name;
+        $product->description = $result->description;
+        $product->price = $result->price;
+        $product->save();
+
+      }
+
 
     }
     //データの変更(更新)
@@ -98,6 +114,18 @@ class IndexController extends ControllerBase
       echo'データの変更';
       $id = $this->dispatcher->getParam('int');
       echo($id);
+
+      $data = Products::findFirst($id);
+
+        $result = $this->request->getJsonRawBody();
+        echo(var_dump($result));
+        echo($data->name);
+
+        $data->name = $result->name;
+        $data->description = $result->description;
+        $data->price = $result->price;
+        $data->update();
+
     }
 
     //データの削除
@@ -106,6 +134,10 @@ class IndexController extends ControllerBase
       echo'データの削除';
       $id = $this->dispatcher->getParam('int');
       echo($id);
+
+      $result = Products::findFirst($id);
+
+      $result->delete();
     }
 
 

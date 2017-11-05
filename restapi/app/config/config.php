@@ -11,7 +11,7 @@ return new \Phalcon\Config([
         'adapter'     => 'Mysql',
         'host'        => 'localhost',
         'username'    => 'root',
-        'password'    => 'pass',
+        'password'    => 'Takumi17',
         'dbname'      => 'shop',
         'charset'     => 'utf8',
     ],

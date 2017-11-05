@@ -15,14 +15,6 @@ class Products extends Model
     public $description;
     public $price;
 
-    public function getId()
-    {
-      return $this->id;
-    }
-    public function getName()
-    {
-    return $this->name;
-    }
 
     public function validation()//データの妥当性を高めるための機能
     {
