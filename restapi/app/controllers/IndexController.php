@@ -13,38 +13,59 @@ class IndexController extends ControllerBase
 
     }
 
+
     //データの取得 全件取得
     public function getAllAction()
     {
-
+      echo'全件取得';
       $data = [];//レスポンスデータの格納 配列
 
-      $result = Products::find(
-        ['order' => 'id',]
+      $products = Products::find(
+        ['order' => 'id',]//id順で
       );
 
-      foreach ($result as $product) {
-        $data[] = [
-          'id'   => $product->id,
-          'name' => $product->name,
-          'price'=> $product->price,
-        ];
+      $response = new Response();
+
+      if ($products === false)
+      {
+          $response->setStatusCode(404, 'NOT-FOUND');
+          $response->setJsonContent(
+            [
+            'status' => 'NOT-FOUND'
+            ]
+          );
+      } else {
+          foreach ($products as $product)
+          {
+                $data[] = [
+                  'id'   => $product->id,
+                  'name' => $product->name,
+                  'price'=> $product->price,
+                ];
+          }
+          $response->setJsonContent(
+            [
+            'status' => 'FOUND',
+            'data'   => $data
+            ],JSON_UNESCAPED_UNICODE
+          );
       }
-
-      return json_encode($data,JSON_UNESCAPED_UNICODE);
-
-    //  echo'全部で',($result->name),'つの商品があります。';
+      return $response;
     }
 
+
+    //データの個別取得(IDで指定)
     public function getPieceAction()
     {
       echo'個別取得';
       $id = $this->dispatcher->getParam('int');
 
-      $result = Products::findFirst($id);
+      $products = Products::findFirst($id);
 
       $response = new Response();
-      if ($result === false) {
+      if ($products === false)
+      {
+          $response->setStatusCode(404, 'NOT-FOUND');
           $response->setJsonContent(
             [
             'status' => 'NOT-FOUND'
@@ -55,36 +76,46 @@ class IndexController extends ControllerBase
             [
             'status' => 'FOUND',
             'data'   => [
-                'id'   => $result->id,
-                'name' => $result->name
+                'id'   => $products->id,
+                'name' => $products->name
               ]
-            ]
+            ],JSON_UNESCAPED_UNICODE
           );
       }
-
       return $response;
-
     }
 
     public function searchAction()
     {
-      echo'検索処理</br>';
+      echo'検索処理';
       $name = $this->dispatcher->getParam('name');
 
-      $result = Products::findFirstByName($name);
+      $products = Products::findFirstByName($name);
 
-      if($result){
-        $data[] = [
-            'id'   => $result->id,
-            'name' => $result->name,
-            'description'=> $result->description,
-            'price'=> $result->price,
-        ];
-        return json_encode($data,JSON_UNESCAPED_UNICODE);
-      }else{
-        echo 'NOT-FOUND';
+      $response = new Response();
+
+      if ($products === false)
+      {
+          $response->setStatusCode(404, 'NOT-FOUND');
+          $response->setJsonContent(
+            [
+            'status' => 'NOT-FOUND'
+            ]
+          );
+      } else {
+          $response->setJsonContent(
+            [
+            'status' => 'FOUND',
+            'data'   => [
+                'id'   => $products->id,
+                'name' => $products->name,
+                'description'=> $products->description,
+                'price'=> $products->price
+              ]
+            ],JSON_UNESCAPED_UNICODE
+          );
       }
-
+      return $response;
     }
 
     //データの挿入
@@ -93,7 +124,7 @@ class IndexController extends ControllerBase
       echo'データの挿入</br>';
 
 
-      if ($this->request->isPost()) {
+      if ($this->request->isPost()){
         $result = $this->request->getJsonRawBody();
         echo(var_dump($result));
         echo($result->name);
