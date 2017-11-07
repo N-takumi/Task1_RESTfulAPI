@@ -2,10 +2,14 @@
 
 //namespace Store\Models;
 
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Validation\Validator\PresenceOf;//null空文字チェック
+use Phalcon\Validation\Validator\StringLength;
+use Phalcon\Validation\Validator\Numericality;//is数値チェック
+use Phalcon\Validation\Validator\Between;//数値の大きさ
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Message;
-//use Phalcon\Mvc\Model\Validator\Uniqueness;
-//use Phalcon\Mvc\Model\Validator\InclusionIn;
 
 class Products extends Model
 {
@@ -19,58 +23,90 @@ class Products extends Model
     public function validation()//データの妥当性を高めるための機能
     {
 
-      /*
-      //
-        // Type must be: droid, mechanical or virtual
-        $this->validate(
-            new InclusionIn(
-                [
-                    'field'  => 'type',
-                    'domain' => ['droid','mechanical','virtual'],
-                ]
-            )
-        );
-      */
-
-      /*
-        // Robot name must be unique
-        $this->validate(
-            new Uniqueness(
-                [
-                    'field'   => 'name',
-                    'message' => 'The robot name must be unique',
-                ]
-            )
-        );
-      */
+      $validator = new Validation();
 
 
-        //タイトルの文字数制限
-        if(strlen($this->name) > 100){
-          $this->appendMessage(
-              new Message('商品タイトルは最大100文字までです。')
-          );
-        }
+      //同じ名前をつけさせない
+      $validator->add(
+        'name',
+        new Uniqueness(
+        [
+            'message' => 'The Product name must be unique',
+        ]
+        )
+      );
 
-        //説明文の文字数制限
-        if(strlen($this->description) > 500){
-          $this->appendMessage(
-              new Message('説明文は最大100文字までです。')
-          );
-        }
+      //値がnullまたは空の文字列でないことを検証
+      $validator->add(
+        [
+        "name",
+        "description",
+        "price",
+        ],
+        new PresenceOf(
+          [
+            "message" => [
+                "name"  => "The name is required",
+                "description" => "The description is required",
+                "price" => "The price is required",
+            ],
+          ]
+        )
+      );
+
+      //文字列長の制限
+      $validator->add(
+        [
+        "name",
+        "description",
+        ],
+        new StringLength(
+          [
+            "max" => [
+                "name"  => 100,
+                "description" => 500,
+            ],
+            "min" => [
+                "name"  => 1,
+                "description" => 1,
+            ],
+            "messageMaximum" => [
+                "name"  => "We don't like really long name",
+                "description" => "We don't like really long description",
+            ],
+            "messageMinimum" => [
+                "name"  => "We don't like too short last name",
+                "description" => "We don't like too short first description",
+            ]
+          ]
+        )
+      );
+
+      //priceが数値であるか
+      $validator->add(
+        "price",
+        new Numericality(
+          [
+            "message" => "price is not numeric",
+          ]
+        )
+      );
+
+      //priceが0以上で99999999以下であるか
+      $validator->add(
+        "price",
+        new Between(
+          [
+            "minimum" => 0,
+            "maximum" => 99999999,
+            "message" => "The price must be between 0 and 99999999",
+          ]
+          )
+      );
 
 
-        //priceに0以下の数字を設定できないようにする
-        if ($this->price < 0) {
-            $this->appendMessage(
-                new Message('The price cannot be less than zero')
-            );
-        }
 
-        // Check if any messages have been produced
-        if ($this->validationHasFailed() === true) {
-            return false;
-        }
+      return $this->validate($validator);
 
     }
 }

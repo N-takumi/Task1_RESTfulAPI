@@ -23,7 +23,7 @@ try {
             [
                 'host'     => 'localhost',
                 'username' => 'root',
-                'password' => 'Takumi17',
+                'password' => 'pass',
                 'dbname'   => 'shop',//shopに変更
             ]
         );
