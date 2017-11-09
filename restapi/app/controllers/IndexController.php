@@ -40,6 +40,7 @@ class IndexController extends ControllerBase
                 $data[] = [
                   'id'   => $product->id,
                   'name' => $product->name,
+                  'description'=>$product->description,
                   'price'=> $product->price,
                 ];
           }
@@ -85,6 +86,9 @@ class IndexController extends ControllerBase
       return $response;
     }
 
+
+
+    //データの検索
     public function searchAction()
     {
       echo'検索処理';
@@ -118,27 +122,56 @@ class IndexController extends ControllerBase
       return $response;
     }
 
+
+
     //データの挿入
     public function addAction()
     {
       echo'データの挿入</br>';
 
+      $response = new Response();
 
       if ($this->request->isPost()){
         $result = $this->request->getJsonRawBody();
-        echo(var_dump($result));
-        echo($result->name);
-
+        //echo(var_dump($result));
         $product = new Products();
         $product->name = $result->name;
         $product->description = $result->description;
         $product->price = $result->price;
         $product->save();
-
+      }else{
+        $response->setStatusCode(400, 'Bad Request');
+        return $response;
       }
 
+      if($product->save() == true)
+      {
+        $response->setStatusCode(201, 'Created');
+        $response->setJsonContent(
+          [
+            'status' => 'OK',
+            'data'   => $result,
+          ],JSON_UNESCAPED_UNICODE
+        );
+      }else{
+        $response->setStatusCode(409, 'Conflict');
+        $errors = [];
 
+        foreach ($product->getMessages() as $message){
+          $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(
+          [
+            'status'   => 'ERROR',
+            'messages' => $errors,
+          ]
+        );
+
+      }
+      return $response;
     }
+
+
     //データの変更(更新)
     public function updateAction()
     {
@@ -146,16 +179,52 @@ class IndexController extends ControllerBase
       $id = $this->dispatcher->getParam('int');
       echo($id);
 
-      $data = Products::findFirst($id);
+      $response = new Response();
 
+      $product = Products::findFirst($id);
+
+      if($product === false)
+      {
+        $response->setStatusCode(404, 'NOT-FOUND');
+        $response->setJsonContent(
+          [
+          'status' => 'NOT-FOUND'
+          ]
+        );
+        return $response;
+      }else{
         $result = $this->request->getJsonRawBody();
-        echo(var_dump($result));
-        echo($data->name);
+        $product->name = $result->name;
+        $product->description = $result->description;
+        $product->price = $result->price;
+        $product->update();
+      }
 
-        $data->name = $result->name;
-        $data->description = $result->description;
-        $data->price = $result->price;
-        $data->update();
+      if($product->save() == true)
+      {
+        $response->setStatusCode(200, 'OK');
+        $response->setJsonContent(
+          [
+            'status' => 'OK',
+            'data'   => $result,
+          ],JSON_UNESCAPED_UNICODE
+        );
+      }else{
+        $response->setStatusCode(409, 'Conflict');
+        $errors = [];
+
+        foreach ($product->getMessages() as $message){
+          $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(
+          [
+            'status'   => 'ERROR',
+            'messages' => $errors,
+          ]
+        );
+      }
+      return $response;
+
 
     }
 
@@ -166,16 +235,47 @@ class IndexController extends ControllerBase
       $id = $this->dispatcher->getParam('int');
       echo($id);
 
-      $result = Products::findFirst($id);
+      $response = new Response();
 
-      $result->delete();
+      $product = Products::findFirst($id);
+      if($product === false){
+        $response->setStatusCode(404, 'NOT-FOUND');
+        $response->setJsonContent(
+          [
+          'status' => 'NOT-FOUND'
+          ]
+        );
+        return $response;
+      }else{
+        $product->delete();
+      }
+
+      if($product->delete() == true)
+      {
+        $response->setStatusCode(200, 'OK');
+        $response->setJsonContent(
+          [
+            'status' => 'DELETED',
+            'data'   => $product,
+          ],JSON_UNESCAPED_UNICODE
+        );
+      }else{
+        $response->setStatusCode(409, 'Conflict');
+        $errors = [];
+
+        foreach ($product->getMessages() as $message){
+          $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(
+          [
+            'status'   => 'ERROR',
+            'messages' => $errors,
+          ]
+        );
+      }
+      return $response;
+
     }
-
-
-
-
-
-
 
 
 
