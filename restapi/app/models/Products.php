@@ -1,6 +1,6 @@
 <?php
 
-//namespace Store\Models;
+namespace Store\Models;
 
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness;

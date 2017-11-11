@@ -1,5 +1,5 @@
 <?php
-//use Store\Models\Products;
+use Store\Models\Products;
 use Phalcon\Http\Response;
 use Phalcon\Http\Request;
 class IndexController extends ControllerBase
