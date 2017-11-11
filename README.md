@@ -59,6 +59,7 @@ example url
     '{"name":"鉛筆","description":"2Bの鉛筆","price":120}'  
 
 レスポンス  
+
     {"status":"OK","data":{"name":"鉛筆","description":"2Bの鉛筆","price":120,"id":"1"}}  
 
 
@@ -71,6 +72,7 @@ example url
 
 レスポンス  
 wordの文字をnameに含むデータを返す  
+
     {"id":"1","name":"word","description":"example","price":"120"}  
 
 
@@ -78,11 +80,13 @@ wordの文字をnameに含むデータを返す
 リクエスト:PUT  
 
 example url  
+
     http://localhost/rest/api/products/{変更する商品のid}  
 
     '{"name":"鉛筆","description":"HBの鉛筆","price":110}'  
 
 レスポンス  
+
     {"status":"OK"}  
 
 
@@ -90,7 +94,9 @@ example url
 リクエスト:DELETE  
 
 example url  
+
     http://localhost/rest/api/products/{削除する商品のid}  
 
 レスポンス  
+
     {"status":"OK"}  
