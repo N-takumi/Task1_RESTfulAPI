@@ -18,19 +18,24 @@ https://www.apachefriends.org/download.html
 
 ### phalconのインストール
 
-brew  
-$ brew tap homebrew/homebrew-php  
-$ brew install php71-phalcon  
+#### brew  
+
+'''
+    $ brew tap homebrew/homebrew-php  
+    $ brew install php71-phalcon  
+'''
 
 ### phalcon-devtoolのインストール
 
-$ git clone git://github.com/phalcon/phalcon-devtools.git  
+'''
+    $ git clone git://github.com/phalcon/phalcon-devtools.git  
 
-$ cd phalcon-devtools/  
-$ . ./phalcon.sh  
+    $ cd phalcon-devtools/  
+    $ . ./phalcon.sh  
 
-$ ln -s ~/phalcon-devtools/phalcon.php /usr/bin/phalcon  
-$ chmod ugo+x /usr/bin/phalcon  
+    $ ln -s ~/phalcon-devtools/phalcon.php /usr/bin/phalcon  
+    $ chmod ugo+x /usr/bin/phalcon  
+'''
 
 ### XAMPPにphalconを導入する場合(macOS)
 
