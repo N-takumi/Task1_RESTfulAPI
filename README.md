@@ -55,7 +55,7 @@ extension="phalcon.so"を追加
 
 example url  
 
-    http://localhost/rest/api/products/  
+    http://localhost/restapi/products/  
     '{"name":"鉛筆","description":"2Bの鉛筆","price":120}'  
 
 レスポンス  
@@ -68,7 +68,7 @@ example url
 
 example url  
 
-    http://localhost/rest/api/products/search/{word}  
+    http://localhost/restapi/products/search/{word}  
 
 レスポンス  
 wordの文字をnameに含むデータを返す  
@@ -81,7 +81,7 @@ wordの文字をnameに含むデータを返す
 
 example url  
 
-    http://localhost/rest/api/products/{変更する商品のid}  
+    http://localhost/restapi/products/{変更する商品のid}  
 
     '{"name":"鉛筆","description":"HBの鉛筆","price":110}'  
 
@@ -95,7 +95,7 @@ example url
 
 example url  
 
-    http://localhost/rest/api/products/{削除する商品のid}  
+    http://localhost/restapi/products/{削除する商品のid}  
 
 レスポンス  
 
