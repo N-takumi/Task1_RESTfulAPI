@@ -73,7 +73,7 @@ $router->addPost(
 
 //画像表示
 $router->addGet(
-  '/products/img',
+  '/products/img/{name}',
   [
     'controller' => 'index',
     'action'     => 'showImg',

@@ -2,10 +2,9 @@ function file_upload()
 {
     console.log("画像アップロード");
     // フォームデータを取得
-/*
-    var formdata = new FormData();
-    //var formdata = new FormData($('#my_form').get(0));
 
+    //var formdata = new FormData();
+    var formdata = new FormData($('#my_form').get(0));
     console.log(formdata);
 
     // POSTでアップロード
@@ -19,13 +18,14 @@ function file_upload()
         dataType    : "html"
     })
     .done(function(data, textStatus, jqXHR){
-        alert(data);
+        console.log(data);
+      //  console.log(formdata.length);
     })
     .fail(function(jqXHR, textStatus, errorThrown){
         alert("fail");
     });
 
-    */
+
 
 
 }

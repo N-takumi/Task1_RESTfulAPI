@@ -287,21 +287,24 @@ class IndexController extends ControllerBase
         echo 'The request was made with Ajax';
       }
 
-
         echo"画像アップロード";
+
         // Check if the user has uploaded files
         if ($this->request->hasFiles()) {
           $files = $this->request->getUploadedFiles();
+          //echo($files);
 
           // Print the real file names and sizes
           foreach ($files as $file) {
             // Print file details
             echo $file->getName(), ' ', $file->getSize(), '\n';
+            echo $file->getTempName();
 
             // Move the file into the application
             $file->moveTo(
-            'img/' . $file->getName()
+            './img/' . $file->getName()
             );
+
           }
         }else{
           echo"失敗";
@@ -312,7 +315,15 @@ class IndexController extends ControllerBase
     //画像表示
     public function showImgAction()
     {
-      echo'画像表示';
+      $name = $this->dispatcher->getParam('name');
+
+    //  $img = new \Phalcon\Image\Adapter\Imagick("/image/$name");
+      echo'画像表示</br>';
+
+      $response = new Response();
+    //  $response->setContentType($img->getMime());
+      $response->setContent($this->tag->image('img/'.$name));
+      $response->send();
 
     }
 
