@@ -62,6 +62,23 @@ $router->addDelete(
     ]
 );
 
+//画像保存
+$router->addPost(
+    '/products/img',
+    [
+      'controller' => 'index',
+      'action'     => 'uploadImg',
+    ]
+);
+
+//画像表示
+$router->addGet(
+  '/products/img',
+  [
+    'controller' => 'index',
+    'action'     => 'showImg',
+  ]
+);
 
 
 

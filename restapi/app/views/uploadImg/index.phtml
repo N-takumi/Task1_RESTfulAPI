@@ -1,0 +1,10 @@
+<h2>Img upload form</h2>
+
+
+    <form id="my_form">
+        <input id="file" type="file" name="file_1">
+        <button type="button" onclick="file_upload()">アップロード</button>
+    </form>
+
+
+<?php echo $this->tag->javascriptInclude('/public/js/upLoadFile.js');?>

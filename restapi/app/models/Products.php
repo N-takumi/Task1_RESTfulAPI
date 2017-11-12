@@ -18,6 +18,7 @@ class Products extends Model
     public $name;
     public $description;
     public $price;
+    public $imgFileName;
 
 
     public function validation()//データの妥当性を高めるための機能
@@ -36,6 +37,7 @@ class Products extends Model
         )
       );
 
+
       //値がnullまたは空の文字列でないことを検証
       $validator->add(
         [
@@ -53,6 +55,7 @@ class Products extends Model
           ]
         )
       );
+
 
       //文字列長の制限
       $validator->add(

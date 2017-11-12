@@ -138,6 +138,7 @@ class IndexController extends ControllerBase
         $product->name = $result->name;
         $product->description = $result->description;
         $product->price = $result->price;
+        $product->imgFileName = " ";
         $product->save();
       }else{
         $response->setStatusCode(400, 'Bad Request');
@@ -276,6 +277,46 @@ class IndexController extends ControllerBase
       return $response;
 
     }
+
+    //画像保存
+    public function uploadImgAction()
+    {
+
+      // Same as above
+      if ($this->request->isAjax()) {
+        echo 'The request was made with Ajax';
+      }
+
+
+        echo"画像アップロード";
+        // Check if the user has uploaded files
+        if ($this->request->hasFiles()) {
+          $files = $this->request->getUploadedFiles();
+
+          // Print the real file names and sizes
+          foreach ($files as $file) {
+            // Print file details
+            echo $file->getName(), ' ', $file->getSize(), '\n';
+
+            // Move the file into the application
+            $file->moveTo(
+            'img/' . $file->getName()
+            );
+          }
+        }else{
+          echo"失敗";
+        }
+
+    }
+
+    //画像表示
+    public function showImgAction()
+    {
+      echo'画像表示';
+
+    }
+
+
 
 
 
