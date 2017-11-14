@@ -66,7 +66,7 @@ $router->addDelete(
 $router->addPost(
     '/products/img',
     [
-      'controller' => 'index',
+      'controller' => 'Imgs',
       'action'     => 'uploadImg',
     ]
 );
@@ -75,7 +75,7 @@ $router->addPost(
 $router->addGet(
   '/products/img/{name}',
   [
-    'controller' => 'index',
+    'controller' => 'Imgs',
     'action'     => 'showImg',
   ]
 );

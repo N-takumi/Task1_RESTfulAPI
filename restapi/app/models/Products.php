@@ -44,6 +44,7 @@ class Products extends Model
         "name",
         "description",
         "price",
+        "imgFileName",
         ],
         new PresenceOf(
           [
@@ -51,6 +52,7 @@ class Products extends Model
                 "name"  => "The name is required",
                 "description" => "The description is required",
                 "price" => "The price is required",
+                "imgFileName" => "The imgFileName is required",
             ],
           ]
         )

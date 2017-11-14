@@ -2,11 +2,9 @@
 use Store\Models\Products;
 use Phalcon\Http\Response;
 use Phalcon\Http\Request;
+
 class IndexController extends ControllerBase
 {
-
-  //コントローラでGETやPOSTのパラメータを受け取り、モデルの関数を呼んでレスポンスを用意して返す処理などを書きます。
-
     public function indexAction()
     {
 
@@ -34,7 +32,7 @@ class IndexController extends ControllerBase
             'status' => 'NOT-FOUND'
             ]
           );
-      } else {
+      }else{
           foreach ($products as $product)
           {
                 $data[] = [[
@@ -53,8 +51,9 @@ class IndexController extends ControllerBase
             ],JSON_UNESCAPED_UNICODE
           );
       }
-      return $response;
+      $response->send();
     }
+
 
 
     //データの個別取得(IDで指定)
@@ -90,7 +89,7 @@ class IndexController extends ControllerBase
             ],JSON_UNESCAPED_UNICODE
           );
       }
-      return $response;
+      $response->send();
     }
 
 
@@ -127,7 +126,7 @@ class IndexController extends ControllerBase
             ],JSON_UNESCAPED_UNICODE
           );
       }
-      return $response;
+      $response->send();
     }
 
 
@@ -139,7 +138,8 @@ class IndexController extends ControllerBase
 
       $response = new Response();
 
-      if ($this->request->isPost()){
+      if ($this->request->isPost())
+      {
         $result = $this->request->getJsonRawBody();
         //echo(var_dump($result));
         $product = new Products();
@@ -150,7 +150,7 @@ class IndexController extends ControllerBase
         $product->save();
       }else{
         $response->setStatusCode(400, 'Bad Request');
-        return $response;
+        $response->send();
       }
 
       if($product->save() == true)
@@ -175,10 +175,10 @@ class IndexController extends ControllerBase
             'messages' => $errors,
           ]
         );
-
       }
-      return $response;
+      $response->send();
     }
+
 
 
     //データの変更(更新)
@@ -200,7 +200,7 @@ class IndexController extends ControllerBase
           'status' => 'NOT-FOUND'
           ]
         );
-        return $response;
+        $response->send();
       }else{
         $result = $this->request->getJsonRawBody();
         $product->name = $result->name;
@@ -233,10 +233,10 @@ class IndexController extends ControllerBase
           ]
         );
       }
-      return $response;
-
-
+      $response->send();
     }
+
+
 
     //データの削除
     public function deleteAction()
@@ -248,14 +248,15 @@ class IndexController extends ControllerBase
       $response = new Response();
 
       $product = Products::findFirst($id);
-      if($product === false){
+      if($product === false)
+      {
         $response->setStatusCode(404, 'NOT-FOUND');
         $response->setJsonContent(
           [
           'status' => 'NOT-FOUND'
           ]
         );
-        return $response;
+        $response->send();
       }else{
         $product->delete();
       }
@@ -273,9 +274,11 @@ class IndexController extends ControllerBase
         $response->setStatusCode(409, 'Conflict');
         $errors = [];
 
-        foreach ($product->getMessages() as $message){
+        foreach ($product->getMessages() as $message)
+        {
           $errors[] = $message->getMessage();
         }
+
         $response->setJsonContent(
           [
             'status'   => 'ERROR',
@@ -283,70 +286,6 @@ class IndexController extends ControllerBase
           ]
         );
       }
-      return $response;
-
-    }
-
-    //画像保存
-    public function uploadImgAction()
-    {
-
-      $response = new Response();
-
-      // Same as above
-      if ($this->request->isAjax()) {
-        echo 'The request was made with Ajax';
-      }
-
-        echo"画像アップロード";
-
-        // Check if the user has uploaded files
-        if ($this->request->hasFiles()) {
-          $files = $this->request->getUploadedFiles();
-          //echo($files);
-
-          // Print the real file names and sizes
-          foreach ($files as $file) {
-            // Print file details
-            echo $file->getName(), ' ', $file->getSize(), '\n';
-            echo $file->getTempName();
-
-            // Move the file into the application
-            $file->moveTo(
-            './img/' . $file->getName()
-            );
-
-
-            $response->setJsonContent(
-              [
-                'status' => 'OK',
-                'imgUrl'   => 'http://localhost/restapi/products/img/'.$file->getName(),
-              ],JSON_UNESCAPED_UNICODE
-            );
-
-
-
-
-          }
-        }else{
-          echo"失敗";
-        }
-
-        return $response;
-
-    }
-
-    //画像表示
-    public function showImgAction()
-    {
-      $name = $this->dispatcher->getParam('name');
-
-    //  $img = new \Phalcon\Image\Adapter\Imagick("/image/$name");
-      echo'画像表示</br>';
-
-      $response = new Response();
-    //  $response->setContentType($img->getMime());
-      $response->setContent($this->tag->image('img/'.$name));
       $response->send();
     }
 
