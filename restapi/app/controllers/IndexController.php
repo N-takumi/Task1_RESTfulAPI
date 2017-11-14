@@ -37,11 +37,13 @@ class IndexController extends ControllerBase
       } else {
           foreach ($products as $product)
           {
-                $data[] = [
+                $data[] = [[
                   'id'   => $product->id,
                   'name' => $product->name,
                   'description'=>$product->description,
                   'price'=> $product->price,
+                  'imgFileName'=> $product->imgFileName,
+                ],'imgUrl' => 'http://localhost/restapi/products/img/'.$product->$imgFileName,
                 ];
           }
           $response->setJsonContent(
@@ -77,9 +79,14 @@ class IndexController extends ControllerBase
             [
             'status' => 'FOUND',
             'data'   => [
-                'id'   => $products->id,
-                'name' => $products->name
-              ]
+              [
+              'id'   => $products->id,
+              'name' => $products->name,
+              'description' => $products->description,
+              'price'=> $products->price,
+              'imgFileName'=> $products->imgFileName
+              ],'imgUrl' => 'http://localhost/restapi/products/img/'.$product->$imgFileName,
+            ]
             ],JSON_UNESCAPED_UNICODE
           );
       }
@@ -114,7 +121,8 @@ class IndexController extends ControllerBase
                 'id'   => $products->id,
                 'name' => $products->name,
                 'description'=> $products->description,
-                'price'=> $products->price
+                'price'=> $products->price,
+                'imgFileName'=> $products->imgFileName
               ]
             ],JSON_UNESCAPED_UNICODE
           );
@@ -138,7 +146,7 @@ class IndexController extends ControllerBase
         $product->name = $result->name;
         $product->description = $result->description;
         $product->price = $result->price;
-        $product->imgFileName = " ";
+        $product->imgFileName = $result->imgFileName;
         $product->save();
       }else{
         $response->setStatusCode(400, 'Bad Request');
@@ -198,6 +206,7 @@ class IndexController extends ControllerBase
         $product->name = $result->name;
         $product->description = $result->description;
         $product->price = $result->price;
+        $product->imgFileName = $result->imgFileName;
         $product->update();
       }
 
@@ -282,6 +291,8 @@ class IndexController extends ControllerBase
     public function uploadImgAction()
     {
 
+      $response = new Response();
+
       // Same as above
       if ($this->request->isAjax()) {
         echo 'The request was made with Ajax';
@@ -305,10 +316,23 @@ class IndexController extends ControllerBase
             './img/' . $file->getName()
             );
 
+
+            $response->setJsonContent(
+              [
+                'status' => 'OK',
+                'imgUrl'   => 'http://localhost/restapi/products/img/'.$file->getName(),
+              ],JSON_UNESCAPED_UNICODE
+            );
+
+
+
+
           }
         }else{
           echo"失敗";
         }
+
+        return $response;
 
     }
 
@@ -324,7 +348,6 @@ class IndexController extends ControllerBase
     //  $response->setContentType($img->getMime());
       $response->setContent($this->tag->image('img/'.$name));
       $response->send();
-
     }
 
 

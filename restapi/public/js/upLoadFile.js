@@ -1,6 +1,5 @@
 function file_upload()
 {
-    console.log("画像アップロード");
     // フォームデータを取得
 
     //var formdata = new FormData();
@@ -17,12 +16,11 @@ function file_upload()
         processData : false,
         dataType    : "html"
     })
-    .done(function(data, textStatus, jqXHR){
-        console.log(data);
-      //  console.log(formdata.length);
+    .done(function(response){
+        alert(response);
     })
     .fail(function(jqXHR, textStatus, errorThrown){
-        alert("fail");
+        alert("アップロード失敗:"+errorThrown);
     });
 
 
