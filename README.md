@@ -83,9 +83,11 @@ example url
 
 
 レスポンス  
-成功 > (200,OK) wordの文字とnameが一致するレコードのデータを返す  
+成功 > (200,OK) wordの文字とnameが一致するレコードのデータと画像表示のURLを返す  
 
-    {"status":"FOUND","data":{"id":"3","name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
+
+
+    {"status":"FOUND","data":{"id":"3","name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"},"imgUrl":"http:\/\/localhost\/restapi\/products\/img\/pencil.jpg"}
 
 
 失敗 > (404,NOT-FOUND)  
