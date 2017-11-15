@@ -50,7 +50,7 @@ extension="phalcon.so"を追加
 
 ## API仕様
 
-以下、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示す。
+以下、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示す。  
 
 ### 商品の登録
 リクエスト:POST  
@@ -61,10 +61,15 @@ example url
 
 
 レスポンス  
+成功 > (201,created)  
 
     {"status":"OK","data":{"name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
 
 
+失敗 > (400,Bad Request) Postデータがない　等
+      (409,Conflict)  挿入データの矛盾　等
+
+    {"status":"ERROR","messages":["{error message}"]}
 
 ### 商品の検索
 リクエスト:GET  
@@ -74,9 +79,14 @@ example url
 
 
 レスポンス  
-wordの文字とnameが一致するレコードのデータを返す
+成功 > (200,OK) wordの文字とnameが一致するレコードのデータを返す  
 
     {"status":"FOUND","data":{"id":"3","name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
+
+
+失敗 > (404,NOT-FOUND)  
+
+    {"status":"NOT-FOUND"}
 
 
 
@@ -90,8 +100,18 @@ example url
 
 
 レスポンス  
+成功 > (200,OK)
 
     {"status":"OK","data":{"name":"鉛筆","description":"HBの鉛筆","price":"110","imgFileName":"pencil.jpg"}}
+
+
+失敗 > (404,NOT-FOUND)指定されたIDの商品が存在しない
+
+    {"status":"NOT-FOUND"}
+
+      (409,Conflict) 変更データの矛盾等
+
+    {"status":"ERROR","messages":["{error message}"]}
 
 
 
@@ -103,7 +123,15 @@ example url
     http://localhost/restapi/products/{削除する商品のid}  
 
 レスポンス  
+成功 > (200,OK)
 
     {"status":"DELETED","data":{"id":"3","name":"鉛筆","description":"HBの鉛筆","price":"110","imgFileName":"pencil.jpg"}}
 
-  
+
+失敗 > (404,NOT-FOUND)指定されたIDの商品が存在しない
+
+    {"status":"NOT-FOUND"}
+
+      (409,Conflict)
+
+    {"status":"ERROR","messages":["{error message}"]}
