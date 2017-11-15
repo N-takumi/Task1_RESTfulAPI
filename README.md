@@ -50,44 +50,49 @@ extension="phalcon.so"を追加
 
 ## API仕様
 
+以下、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示す。
+
 ### 商品の登録
 リクエスト:POST  
-
 example url  
 
-    http://localhost/restapi/products/  
-    '{"name":"鉛筆","description":"2Bの鉛筆","price":120}'  
+    http://localhost/restapi/products
+    '{"name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}'
+
 
 レスポンス  
 
-    {"status":"OK","data":{"name":"鉛筆","description":"2Bの鉛筆","price":120,"id":"1"}}  
+    {"status":"OK","data":{"name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
+
 
 
 ### 商品の検索
 リクエスト:GET  
-
 example url  
 
     http://localhost/restapi/products/search/{word}  
 
-レスポンス  
-wordの文字をnameに含むデータを返す  
 
-    {"id":"1","name":"word","description":"example","price":"120"}  
+レスポンス  
+wordの文字とnameが一致するレコードのデータを返す
+
+    {"status":"FOUND","data":{"id":"3","name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
+
 
 
 ### 商品の変更
 リクエスト:PUT  
-
 example url  
 
     http://localhost/restapi/products/{変更する商品のid}  
 
-    '{"name":"鉛筆","description":"HBの鉛筆","price":110}'  
+    {"name":"鉛筆","description":"HBの鉛筆","price":"110","imgFileName":"pencil.jpg"}
+
 
 レスポンス  
 
-    {"status":"OK"}  
+    {"status":"OK","data":{"name":"鉛筆","description":"HBの鉛筆","price":"110","imgFileName":"pencil.jpg"}}
+
 
 
 ### 商品の削除
@@ -99,4 +104,6 @@ example url
 
 レスポンス  
 
-    {"status":"OK"}  
+    {"status":"DELETED","data":{"id":"3","name":"鉛筆","description":"HBの鉛筆","price":"110","imgFileName":"pencil.jpg"}}
+
+  
