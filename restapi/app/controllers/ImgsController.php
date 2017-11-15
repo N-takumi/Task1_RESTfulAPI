@@ -25,6 +25,27 @@ class ImgsController extends Controller
                 echo $file->getName(), ' ', $file->getSize(), '\n';
                 echo $file->getTempName();
 
+                //アップロードファイルの拡張子チェック
+                if (!$ext = array_search(
+                    mime_content_type($file->getTempName()),
+                    array(
+                        'gif' => 'image/gif',
+                        'jpg' => 'image/jpeg',
+                        'png' => 'image/png',
+                    ),
+                    true
+                )){
+                  $response->setStatusCode(400, 'Bad Request');
+                  $response->setJsonContent(
+                    [
+                      'status' => 'Bad Request',
+                      'message'=>$file->getType().'は認められないファイル形式です',
+                    ],JSON_UNESCAPED_UNICODE
+                  );
+                  return $response;
+                }
+
+
                 if($file->moveTo('./img/' . $file->getName()) === false)
                 {
                   $response->setStatusCode(409, 'Conflict');
@@ -33,6 +54,7 @@ class ImgsController extends Controller
                   $response->setJsonContent(
                     [
                       'status' => 'OK',
+                      'fileSize'=>$file->getType(),
                       'imgUrl'   => 'http://localhost/restapi/products/img/'.$file->getName(),
                     ],JSON_UNESCAPED_UNICODE
                   );
@@ -42,8 +64,8 @@ class ImgsController extends Controller
           }else{
             $response->setStatusCode(400, 'Bad Request');
           }
-            $response->send();
-            //return $response;
+            //$response->send();
+            return $response;
         }
 
 

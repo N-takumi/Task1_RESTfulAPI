@@ -41,7 +41,7 @@ class IndexController extends ControllerBase
                   'description'=>$product->description,
                   'price'=> $product->price,
                   'imgFileName'=> $product->imgFileName,
-                ],'imgUrl' => 'http://localhost/restapi/products/img/'.$product->$imgFileName,
+                ],'imgUrl' => ('http://localhost/restapi/products/img/'.$product->imgFileName)
                 ];
           }
           $response->setJsonContent(
@@ -51,7 +51,7 @@ class IndexController extends ControllerBase
             ],JSON_UNESCAPED_UNICODE
           );
       }
-      $response->send();
+      return $response;
     }
 
 
@@ -62,10 +62,10 @@ class IndexController extends ControllerBase
       echo'個別取得';
       $id = $this->dispatcher->getParam('int');
 
-      $products = Products::findFirst($id);
+      $product = Products::findFirst($id);
 
       $response = new Response();
-      if ($products === false)
+      if ($product === false)
       {
           $response->setStatusCode(404, 'NOT-FOUND');
           $response->setJsonContent(
@@ -78,18 +78,17 @@ class IndexController extends ControllerBase
             [
             'status' => 'FOUND',
             'data'   => [
-              [
-              'id'   => $products->id,
-              'name' => $products->name,
-              'description' => $products->description,
-              'price'=> $products->price,
-              'imgFileName'=> $products->imgFileName
-              ],'imgUrl' => 'http://localhost/restapi/products/img/'.$product->$imgFileName,
-            ]
+              'id'   => $product->id,
+              'name' => $product->name,
+              'description' => $product->description,
+              'price'=> $product->price,
+              'imgFileName'=> $product->imgFileName
+              ],
+            'imgUrl' =>  ('http://localhost/restapi/products/img/'.$products->imgFileName)
             ],JSON_UNESCAPED_UNICODE
           );
       }
-      $response->send();
+      return $response;
     }
 
 
@@ -113,6 +112,7 @@ class IndexController extends ControllerBase
             ]
           );
       } else {
+          $response->setStatusCode(200, 'OK');
           $response->setJsonContent(
             [
             'status' => 'FOUND',
@@ -122,11 +122,12 @@ class IndexController extends ControllerBase
                 'description'=> $products->description,
                 'price'=> $products->price,
                 'imgFileName'=> $products->imgFileName
-              ]
-            ],JSON_UNESCAPED_UNICODE
+              ],
+            'imgUrl' =>  ('http://localhost/restapi/products/img/'.$products->imgFileName)
+              ],JSON_UNESCAPED_UNICODE
           );
       }
-      $response->send();
+      return $response;
     }
 
 
@@ -150,7 +151,7 @@ class IndexController extends ControllerBase
         $product->save();
       }else{
         $response->setStatusCode(400, 'Bad Request');
-        $response->send();
+        return $response;
       }
 
       if($product->save() == true)
@@ -169,6 +170,7 @@ class IndexController extends ControllerBase
         foreach ($product->getMessages() as $message){
           $errors[] = $message->getMessage();
         }
+
         $response->setJsonContent(
           [
             'status'   => 'ERROR',
@@ -176,7 +178,7 @@ class IndexController extends ControllerBase
           ]
         );
       }
-      $response->send();
+      return $response;
     }
 
 
@@ -200,7 +202,7 @@ class IndexController extends ControllerBase
           'status' => 'NOT-FOUND'
           ]
         );
-        $response->send();
+        return $response;
       }else{
         $result = $this->request->getJsonRawBody();
         $product->name = $result->name;
@@ -233,7 +235,7 @@ class IndexController extends ControllerBase
           ]
         );
       }
-      $response->send();
+      return $response;
     }
 
 
@@ -256,7 +258,7 @@ class IndexController extends ControllerBase
           'status' => 'NOT-FOUND'
           ]
         );
-        $response->send();
+        return $response;
       }else{
         $product->delete();
       }
@@ -286,12 +288,7 @@ class IndexController extends ControllerBase
           ]
         );
       }
-      $response->send();
+      return $response;
     }
-
-
-
-
-
 
 }

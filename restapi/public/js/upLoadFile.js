@@ -17,10 +17,16 @@ function file_upload()
         dataType    : "html"
     })
     .done(function(response){
-        alert(response);
+        var data = JSON.parse(response);
+        console.log(data);
+        $('#imgUrl').attr('href',data.imgUrl);
+        $('#imgUrl').append(data.imgUrl);
+        $('p').append(data.fileSize);
     })
     .fail(function(jqXHR, textStatus, errorThrown){
         alert("アップロード失敗:"+errorThrown);
+        var message = JSON.parse(jqXHR.responseText).message;
+        $('#message').text(message);
     });
 
 

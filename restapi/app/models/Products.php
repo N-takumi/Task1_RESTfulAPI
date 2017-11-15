@@ -26,7 +26,6 @@ class Products extends Model
 
       $validator = new Validation();
 
-
       //同じ名前をつけさせない
       $validator->add(
         'name',
@@ -110,8 +109,8 @@ class Products extends Model
       );
 
 
-
       return $this->validate($validator);
-
     }
+
+
 }
