@@ -139,3 +139,12 @@ example url
       (409,Conflict)
 
     {"status":"ERROR","messages":["{error message}"]}
+
+
+### 商品画像のアップロード
+
+  以下のURLにアクセスし、フォームにて画像ファイルを選択しアップロードを行う
+
+    http://localhost/restapi/imgs  
+
+  ![画像アップロードページ](https://github.com/N-takumi/Task1_RESTfulAPI/description_IMG/upload.png)
