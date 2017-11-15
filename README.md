@@ -13,7 +13,7 @@
 
 ## Installation
 ### XAMPPのインストール
-以下でそれぞれのOSにあったものをインストールする  
+以下でそれぞれのOSにあったものをインストールする
 https://www.apachefriends.org/download.html  
 
 ### phalconのインストール
@@ -50,7 +50,7 @@ extension="phalcon.so"を追加
 
 ## API仕様
 
-以下、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示す。  
+以下に、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示します。
 
 
 
@@ -83,7 +83,7 @@ example url
 
 
 レスポンス  
-成功 > (200,OK) wordの文字とnameが一致するレコードのデータと画像表示のURLを返す  
+成功 > (200,OK) wordの文字とnameが一致するレコードのデータと画像表示のURLを返します
 
 
 
@@ -146,8 +146,11 @@ example url
 
 ### 商品画像のアップロード
 
-  以下のURLにアクセスし、フォームにて画像ファイルを選択しアップロードを行う
+  以下のURLにアクセスし、フォームにて画像ファイルを選択しアップロードを行います
 
-    http://localhost/restapi/imgs  
+    http://localhost/restapi/Imgs  
 
   ![画像アップロードページ](https://github.com/N-takumi/Task1_RESTfulAPI/blob/master/description_IMG/upload.png)
+
+
+  アップロードが成功すれば、その画像を表示するためのURLが返されます
