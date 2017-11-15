@@ -52,6 +52,8 @@ extension="phalcon.so"を追加
 
 以下、商品の「登録/検索/変更/削除」におけるリクエストとレスポンスを示す。  
 
+
+
 ### 商品の登録
 リクエスト:POST  
 example url  
@@ -66,10 +68,12 @@ example url
     {"status":"OK","data":{"name":"鉛筆","description":"すごい","price":"120","imgFileName":"pencil.jpg"}}
 
 
-失敗 > (400,Bad Request) Postデータがない　等
-      (409,Conflict)  挿入データの矛盾　等
+失敗 > (400,Bad Request) Postデータがない　等  
+      (409,Conflict)  挿入データの矛盾　等  
 
     {"status":"ERROR","messages":["{error message}"]}
+
+
 
 ### 商品の検索
 リクエスト:GET  
