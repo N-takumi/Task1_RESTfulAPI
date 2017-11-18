@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017 年 11 月 19 日 00:00
+-- Generation Time: 2017 年 11 月 19 日 00:39
 -- サーバのバージョン： 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -45,7 +45,16 @@ CREATE TABLE `products` (
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
-COMMIT;
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
