@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017 年 11 月 19 日 00:39
+-- Generation Time: 2017 年 11 月 16 日 03:05
 -- サーバのバージョン： 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -30,9 +30,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `price` int(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `description` varchar(256) NOT NULL,
+  `price` varchar(256) NOT NULL,
   `imgFileName` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -45,16 +45,7 @@ CREATE TABLE `products` (
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -9,7 +9,7 @@ $router = $di->getRouter();
 $router->addGet(
     '/products',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'getAll',
     ]
 );
@@ -18,7 +18,7 @@ $router->addGet(
 $router->addGet(
     '/products/:int',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'getPiece',
         'int'        =>1,
     ]
@@ -28,7 +28,7 @@ $router->addGet(
 $router->addGet(
     '/products/search/{name}',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'search',
     ]
 );
@@ -37,7 +37,7 @@ $router->addGet(
 $router->addPost(
     '/products',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'add',
     ]
 );
@@ -46,7 +46,7 @@ $router->addPost(
 $router->addPut(
     '/products/:int',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'update',
         'int'        =>1,
     ]
@@ -56,7 +56,7 @@ $router->addPut(
 $router->addDelete(
     '/products/:int',
     [
-        'controller' => 'index',
+        'controller' => 'Products',
         'action'     => 'delete',
         'int'        =>1,
     ]

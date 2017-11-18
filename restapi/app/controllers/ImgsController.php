@@ -1,9 +1,8 @@
 <?php
-use Phalcon\Mvc\Controller;
 use Store\Models\Products;
 use Phalcon\Http\Response;
 use Phalcon\Http\Request;
-class ImgsController extends Controller
+class ImgsController extends ControllerBase
 {
     public function indexAction()
     {
@@ -55,7 +54,7 @@ class ImgsController extends Controller
                     [
                       'status' => 'OK',
                       'fileSize'=>$file->getType(),
-                      'imgUrl'   => 'http://localhost/restapi/products/img/'.$file->getName(),
+                      'imgUrl'   => 'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName(),
                     ],JSON_UNESCAPED_UNICODE
                   );
                 }
@@ -81,7 +80,7 @@ class ImgsController extends Controller
           if(file_exists('img/'.$name) === false)
           {
             $response->setStatusCode(404, 'NOT-FOUND');
-            echo '画像なし</br>';
+            echo $name.'は現在登録されていません</br>';
           }else{
             $response->setStatusCode(200, 'OK');
             echo '画像あり</br>';
